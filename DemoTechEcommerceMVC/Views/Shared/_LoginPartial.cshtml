@@ -1,10 +1,18 @@
 ﻿@using Microsoft.AspNetCore.Identity;
+@using Microsoft.EntityFrameworkCore
 @inject SignInManager<Users> signInManager;
+@inject UserManager<Users> UserManager;
+
+@{
+    var user = await UserManager.Users.FirstOrDefaultAsync(u => u.Id == UserManager.GetUserId(User));
+}
 
 <ul class="navbar-nav ms-auto">
     @if(signInManager.IsSignedIn(User))
     {
-        <li class="nav-item">
+
+        <li class="nav-item d-flex align-items-center">
+            <span class="navbar-text me-3">Hello @user.FullName</span>
             <a class="nav-link text-dark" asp-controller="Account" asp-action="Logout">Logout</a>
         </li>
     }

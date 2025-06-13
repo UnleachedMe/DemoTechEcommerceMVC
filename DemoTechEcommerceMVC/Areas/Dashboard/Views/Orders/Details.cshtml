@@ -1,0 +1,56 @@
+﻿@model DemoTechEcommerceMVC.Models.Order
+
+@{
+    ViewData["Title"] = "Details";
+}
+<div style="margin-left: 50px;">
+    
+        
+    <h1>Details</h1>
+
+    <div>
+        <h4>Order</h4>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-2">
+                Utilisateur
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.User.UserName)
+            </dd>
+
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Address)
+            </dt>
+            <dd class="col-sm-10">
+                @Model.Address.AdressLine @Model.Address.City, @Model.Address.ZipCode
+            </dd>
+
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Amount)
+            </dt>
+            <dd class="col-sm-10">
+                @($"{Model.Amount} DH")
+            </dd>
+
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Status)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Status)
+            </dd>
+
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.CreatedAt)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.CreatedAt)
+            </dd>
+        </dl>
+    </div>
+
+    <div>
+        <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+        <a asp-action="Index">Back to List</a>
+    </div>
+</div>

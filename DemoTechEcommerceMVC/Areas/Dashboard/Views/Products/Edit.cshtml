@@ -39,7 +39,15 @@
                 <input type="file" name="Image" class="form-control" />
                 <span asp-validation-for="Image" class="text-danger"></span>
             </div>
+
             <div class="form-group">
+                <label asp-for="CategoryId" class="control-label"></label>
+                <select asp-for="CategoryId" class="form-control" asp-items="@ViewBag.categories">
+                    <option value="">Select Category</option>
+                </select>
+                <span asp-validation-for="CategoryId" class="text-danger"></span>
+            </div>
+            <!--<div class="form-group">
                 <label asp-for="Category" class="control-label"></label>
                 <select class="form-select" asp-for="Category">
                     <option value="Other">Other</option>
@@ -50,7 +58,7 @@
                     <option value="Cameras">Cameras</option>
                 </select>
                 <span asp-validation-for="Category" class="text-danger"></span>
-            </div>
+            </div>-->
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>

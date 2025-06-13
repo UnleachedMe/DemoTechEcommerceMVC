@@ -23,7 +23,9 @@ namespace DemoTechEcommerceMVC.Areas.Dashboard.Controllers
         // GET: Dashboard/Products
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Products.ToListAsync());
+            return View(await _context.Products
+                .Include(x => x.CategoryNavigation)
+                .ToListAsync());
         }
 
         // GET: Dashboard/Products/Details/5
@@ -47,12 +49,10 @@ namespace DemoTechEcommerceMVC.Areas.Dashboard.Controllers
         // GET: Dashboard/Products/Create
         public IActionResult Create()
         {
+            ViewBag.Categories = new SelectList(_context.Categories.ToList(), "Id", "Name");
             return View();
         }
 
-        // POST: Dashboard/Products/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Product product, IFormFile Image)
@@ -85,6 +85,9 @@ namespace DemoTechEcommerceMVC.Areas.Dashboard.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
+            ViewBag.categories = new SelectList(await _context.Categories.ToListAsync(), "Id", "Name");
+
             return View(product);
         }
 
@@ -101,12 +104,15 @@ namespace DemoTechEcommerceMVC.Areas.Dashboard.Controllers
             {
                 return NotFound();
             }
+
+            var categories = await _context.Categories.ToListAsync();
+
+            ViewBag.categories = new SelectList(categories, "Id", "Name");
+
             return View(product);
         }
 
-        // POST: Dashboard/Products/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, Product product, IFormFile Image)
@@ -144,8 +150,9 @@ namespace DemoTechEcommerceMVC.Areas.Dashboard.Controllers
                     oldProduct.Name = product.Name;
                     oldProduct.Price = product.Price;
                     oldProduct.Description = product.Description;
-                    oldProduct.Category = product.Category;
-                   
+                    oldProduct.CategoryId = product.CategoryId;
+                    oldProduct.CategoryNavigation = product.CategoryNavigation;
+
 
                     _context.Update(oldProduct);
                     await _context.SaveChangesAsync();

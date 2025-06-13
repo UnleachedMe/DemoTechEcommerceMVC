@@ -1,3 +1,5 @@
+#nullable enable
+
 namespace DemoTechEcommerceMVC.Models
 {
     public class ErrorViewModel

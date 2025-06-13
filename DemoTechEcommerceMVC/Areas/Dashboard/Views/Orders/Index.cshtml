@@ -1,0 +1,63 @@
+﻿@model IEnumerable<DemoTechEcommerceMVC.Models.Order>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+@using Microsoft.AspNetCore.Identity;
+@using Microsoft.EntityFrameworkCore
+@inject SignInManager<Users> signInManager;
+@inject UserManager<Users> UserManager;
+
+@{
+    var user = await UserManager.Users.FirstOrDefaultAsync(u => u.Id == UserManager.GetUserId(User));
+}
+
+<div style="margin-left: 50px;">
+    <!-- Décalage à droite -->
+
+    <h1>Index</h1>
+
+    <p>
+        <a class="btn btn-primary" asp-action="Create">Create New Order</a>
+    </p>
+    <div class="container-fluid">
+        <!-- S'adapte à 100% de la largeur -->
+        <div class="card shadow nb-3">
+            <div class="card-body">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>@Html.DisplayNameFor(model => model.User)</th>
+                            <th>@Html.DisplayNameFor(model => model.Address)</th>
+                            <th>@Html.DisplayNameFor(model => model.OrderProducts)</th>
+                            <th>@Html.DisplayNameFor(model => model.Amount)</th>
+                            <th>@Html.DisplayNameFor(model => model.Status)</th>
+                            <th>@Html.DisplayNameFor(model => model.CreatedAt)</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@Html.DisplayFor(modelItem =>@user.FullName)</td>
+                                <td>@Html.DisplayFor(modelItem => item.Address.AdressLine)</td>
+                                <td>@Html.DisplayFor(modelItem => item.OrderProducts.Count)</td>
+                                <td>
+                                <td>@Html.DisplayFor(modelItem => item.Amount) DH</td></td>
+                                <td>@Html.DisplayFor(modelItem => item.Status)</td>
+                                <td>@Html.DisplayFor(modelItem => item.CreatedAt)</td>
+                                <td>
+                                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary btn-sm me-1">Edit</a>
+                                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info btn-sm me-1">Details</a>
+                                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm">Delete</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
