@@ -100,15 +100,33 @@ namespace DemoTechEcommerceMVC.Controllers
                 _context.OrderProducts.Add(orderProduct);
             }
 
+            //await _context.SaveChangesAsync();
+            //_context.RemoveRange(carts);
+            //await _context.SaveChangesAsync();
             await _context.SaveChangesAsync();
-            _context.RemoveRange(carts);
-            await _context.SaveChangesAsync();
-            return RedirectToAction("Thankyou");
+            //return RedirectToAction("Thankyou");
+
+            return RedirectToAction("CreateCheckoutSession", "Payments", new { orderId = order.Id });
         }
 
-        public async Task<IActionResult> ThankyouAsync()
+        public async Task<IActionResult> ThankyouAsync(int orderId)
         {
             var currentUser = await _userManager.GetUserAsync(HttpContext.User);
+            var order = await _context.Orders
+                .Include(o => o.Address)
+                .Include(o => o.OrderProducts)
+                    .ThenInclude(op => op.Product)
+                .FirstOrDefaultAsync(o => o.Id == orderId && o.UserId == currentUser.Id);
+
+            if (order == null)
+                return NotFound();
+
+            // ✅ Maintenant qu'on est sûr que le paiement est terminé :
+            var carts = await _context.Carts.Where(c => c.UserId == currentUser.Id).ToListAsync();
+            _context.Carts.RemoveRange(carts);
+            await _context.SaveChangesAsync();
+
+            //var currentUser = await _userManager.GetUserAsync(HttpContext.User);
             var latestOrder = await _context.Orders
                 .Include(o => o.Address)
                 .Where(o => o.UserId == currentUser.Id)

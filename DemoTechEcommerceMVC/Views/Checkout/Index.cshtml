@@ -161,13 +161,13 @@
             <!-- Liste des adresses existantes -->
             <div class="address-list">
                 <h3 class="mb-3 fw-bold text-primary">
-                    <i class="bi bi-bookmark-heart me-2"></i>Vos adresses
+                    <i class="bi bi-bookmark-heart me-2"></i>Your addresses
                 </h3>
 
                 @if (addresses == null || addresses.Count == 0)
                 {
                     <div class="alert alert-info">
-                        <i class="bi bi-info-circle me-2"></i>Vous n'avez pas encore d'adresse enregistrée.
+                        <i class="bi bi-info-circle me-2"></i>No registered address known yet.
                     </div>
                 }
                 else
@@ -193,7 +193,7 @@
                                 </p>
                                 <a asp-controller="Checkout" asp-action="Confirm" asp-route-addressId="@address.Id"
                                    class="btn btn-primary btn-deliver">
-                                    <i class="bi bi-truck me-2"></i>Livrer à cette adresse
+                                    <i class="bi bi-truck me-2"></i>Deliver to this address
                                 </a>
                             </div>
                         </div>

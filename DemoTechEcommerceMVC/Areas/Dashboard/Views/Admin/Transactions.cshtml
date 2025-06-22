@@ -1,0 +1,50 @@
+﻿@model List<Stripe.Charge>
+
+<h2 class="mb-4">Transactions Stripe récentes</h2>
+
+@if (Model == null || !Model.Any())
+{
+    <div class="alert alert-info" role="alert">
+        Aucune transaction trouvée.
+    </div>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table table-hover align-middle">
+            <thead class="table-dark text-uppercase small">
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Client</th>
+                    <th scope="col" class="text-end">Montant</th>
+                    <th scope="col">Devise</th>
+                    <th scope="col">Statut</th>
+                    <th scope="col">Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var charge in Model)
+                {
+                    <tr>
+                        <td class="text-truncate" style="max-width: 150px;">
+                            <a href="https://dashboard.stripe.com/payments/@charge.Id" target="_blank" rel="noopener noreferrer" title="Voir dans Stripe Dashboard">
+                                @charge.Id
+                            </a>
+                        </td>
+                        <td>@(string.IsNullOrWhiteSpace(charge.BillingDetails?.Name) ? "N/A" : charge.BillingDetails.Name)</td>
+                        <td class="text-end fw-semibold">
+                            @string.Format(System.Globalization.CultureInfo.GetCultureInfo("fr-FR"), "{0:N2}", charge.Amount / 100.0)
+                        </td>
+                        <td class="text-uppercase">@charge.Currency</td>
+                        <td>
+                            <span class="badge @(charge.Status == "succeeded" ? "bg-success" : charge.Status == "pending" ? "bg-warning text-dark" : "bg-danger")">
+                                @charge.Status
+                            </span>
+                        </td>
+                        <td>@charge.Created.ToLocalTime().ToString("dd/MM/yyyy HH:mm")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

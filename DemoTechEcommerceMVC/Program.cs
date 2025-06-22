@@ -2,6 +2,7 @@ using DemoTechEcommerceMVC.Data;
 using DemoTechEcommerceMVC.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Stripe;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,6 +30,10 @@ builder.Services.AddIdentity<Users, IdentityRole>(options =>
     options.Lockout.MaxFailedAccessAttempts = 5;
 }).AddEntityFrameworkStores<AppDbContext>()
   .AddDefaultTokenProviders();
+
+StripeConfiguration.ApiKey = builder.Configuration.GetSection("Stripe")["SecretKey"];
+
+builder.Services.AddScoped<DemoTechEcommerceMVC.Areas.Services.StripeService>();
 
 var app = builder.Build();
 

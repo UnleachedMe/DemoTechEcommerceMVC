@@ -1,0 +1,91 @@
+﻿
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Paiement par Carte</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f2f2f2;
+            padding: 40px;
+        }
+
+        .payment-form {
+            background: #fff;
+            padding: 20px 30px;
+            max-width: 400px;
+            margin: auto;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+            .payment-form h2 {
+                margin-bottom: 20px;
+            }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+
+        input[type="submit"] {
+            background-color: #28a745;
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+            input[type="submit"]:hover {
+                background-color: #218838;
+            }
+    </style>
+</head>
+<body>
+
+    <form class="payment-form" id="checkout-form" method="post">
+        <h2>Informations de Paiement</h2>
+
+        <div class="form-group">
+            <label for="cardholder-name">Nom sur la carte</label>
+            <input type="text" id="cardholder-name" placeholder="Jean Dupont" required>
+        </div>
+
+        <div class="form-group">
+            <label for="card-number">Numéro de carte</label>
+            <input type="text" id="card-number" placeholder="1234 5678 9012 3456" maxlength="19" required>
+        </div>
+
+        <div class="form-group">
+            <label for="expiry-date">Date d'expiration</label>
+            <input type="text" id="expiry-date" placeholder="MM/AA" maxlength="5" required>
+        </div>
+
+        <div class="form-group">
+            <label for="cvv">CVV</label>
+            <input type="number" id="cvv" placeholder="123" maxlength="4" required>
+        </div>
+
+        <input asp-action="CreateCheckoutSession" asp-controller="Payments" type="submit" value="Pay Now">
+    </form>
+
+</body>
+</html>
+
+@section scripts {
+    <script src="https://js.stripe.com/v3/"></script>
+}
