@@ -1,3 +1,50 @@
-﻿﻿<h1>Thank you for your Order</h1>
+﻿@model Order
 
-<a asp-controller="Orders" asp-action="Index">Go Orders</a>
+@{
+    // Safe null checks
+    var orderId = Model?.Id.ToString() ?? "N/A";
+    var orderDate = Model?.CreatedAt.ToString("MMM dd, yyyy") ?? "N/A";
+    var orderAmount = Model?.Amount.ToString("N2") ?? "0.00";
+    var addressLine = Model?.Address?.AdressLine ?? "Address not specified";
+    var cityStateZip = $"{(Model?.Address?.City != null ? Model.Address.City + ", " : "")}{Model?.Address?.State} {Model?.Address?.ZipCode}";
+}
+
+<section class="min-vh-100 d-flex align-items-center">
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6 text-center">
+
+                <!-- Checkmark icon -->
+                <div class="mb-4">
+                    <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="12" cy="12" r="10" fill="#10B981" opacity="0.2" />
+                        <path d="M8 12L11 15L16 9" stroke="#10B981" stroke-width="2" stroke-linecap="round" />
+                    </svg>
+                </div>
+
+                <!-- Main heading -->
+                <h1 class="display-5 fw-bold mb-3">Order Confirmed</h1>
+
+                <!-- Summary card -->
+                <div class="card border-0 shadow-sm rounded-lg mb-4">
+                    <div class="card-body p-4">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="text-muted">Order #</span>
+                            <span class="fw-medium">@orderId</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="text-muted">Date</span>
+                            <span>@orderDate</span>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <span class="text-muted">Total</span>
+                            <span class="fw-bold">$@orderAmount</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action buttons -->
+                <div class="d-grid gap-3 d-sm-flex justify-content-sm-center">
+                    <a asp-controller="Orders" asp-action="Index" class="btn btn-primary px-4 gap-3">
+                        View Orders
+                    </a>

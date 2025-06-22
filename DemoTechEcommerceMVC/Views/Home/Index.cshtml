@@ -1,57 +1,219 @@
 ﻿@using DemoTechEcommerceMVC.ViewModels
 @model HomeViewModel
 @{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "TechBoutique - High-Tech Store";
 }
 
-@section PageTitle {
-    <!--Header-->
-    <header class="bg-dark py-5">
-        <div class="container px-4 px-lg-5 my-5">
-            <div class="text-center text-white">
-                <h1 class="display-4 fw-bolder">Shop in style</h1>
-                <p class="lead fw-normal text-white-50 mb-0">With this shop hompeage template</p>
-            </div>
+@section Styles {
+    <style>
+        :root {
+            --primary-color: #4361ee;
+            --dark-color: #212529;
+            --light-color: #f8f9fa;
+            --hover-color: #3a56e8;
+        }
+
+        .hero-section {
+            background: linear-gradient(135deg, #000428, #004e92);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-section::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=2070') no-repeat center center;
+            background-size: cover;
+            opacity: 0.4;
+        }
+
+        .product-card {
+            transition: all 0.3s ease;
+            border-radius: 10px;
+            overflow: hidden;
+            border: none;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+
+        .product-img-container {
+            height: 250px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f8f9fa;
+        }
+
+        .product-img {
+            object-fit: contain;
+            height: 80%;
+            transition: transform 0.5s ease;
+        }
+
+        .product-card:hover .product-img {
+            transform: scale(1.05);
+        }
+
+        .price-tag {
+            font-weight: 700;
+            color: var(--primary-color);
+            font-size: 1.2rem;
+        }
+
+        .btn-primary-custom {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary-custom:hover {
+            background-color: var(--hover-color);
+            border-color: var(--hover-color);
+            transform: translateY(-2px);
+        }
+
+        .section-title {
+            position: relative;
+            margin-bottom: 3rem;
+        }
+
+        .section-title::after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: var(--primary-color);
+        }
+    </style>
+}
+
+<!-- Hero Section -->
+<section class="hero-section py-5">
+    <div class="container position-relative px-4 px-lg-5 my-5 text-white text-center">
+        <div class="position-relative z-index-1">
+            <h1 class="display-3 fw-bold mb-4">Découvrez la technologie de demain</h1>
+            <p class="lead fs-4 mb-5">Des produits high-tech sélectionnés pour leur excellence</p>
+            <a asp-controller="Products" asp-action="Index" class="btn btn-light btn-lg px-4 py-2 fs-5">
+                Explorer la boutique <i class="bi bi-arrow-right ms-2"></i>
+            </a>
         </div>
-    </header>
-}
+    </div>
+</section>
 
-
-
-<!-- Section-->
-<section class="py-5">
-    <div class="container px-4 px-lg-5 mt-5">
-        <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
-            @foreach(var product in Model.Products)
+<!-- Featured Products -->
+<section class="py-5 bg-light">
+    <div class="container px-4 px-lg-5">
+        <h2 class="text-center section-title fw-bold mb-5">Nos Produits Phares</h2>
+        <div class="row gx-4 gx-lg-5 row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4">
+            @foreach (var product in Model.Products)
             {
                 <div class="col mb-5">
-                    <div class="card h-100">
+                    <div class="card h-100 product-card">
                         <!-- Product image-->
-                        <a asp-controller="Products" asp-action="Details" asp-route-id="@product.Id">
-                            <img class="card-img-top" src="@product.Image" width="295px" height="255px" alt="Image of @product.Name" />
-                        </a>                        <!-- Product details-->
+                        <div class="product-img-container p-3">
+                            <a asp-controller="Products" asp-action="Details" asp-route-id="@product.Id">
+                                <img class="product-img card-img-top" src="@product.Image" alt="Image of @product.Name" />
+                            </a>
+                        </div>
+
                         <!-- Product details-->
                         <div class="card-body p-4">
                             <div class="text-center">
                                 <!-- Product name-->
-                                <h5 class="fw-bolder">
+                                <h5 class="fw-bolder mb-3">
                                     <a class="text-decoration-none text-dark" asp-controller="Products" asp-action="Details" asp-route-id="@product.Id">@product.Name</a>
                                 </h5>
                                 <!-- Product price-->
-                                @($"{product.Price} DH")
+                                <span class="price-tag">@($"{product.Price} DH")</span>
                             </div>
                         </div>
+
                         <!-- Product actions-->
                         <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
                             <div class="text-center">
-                                <a asp-controller="Cart" asp-action="AddToCart" asp-route-productId="@product.Id" class="btn btn-outline-dark mt-auto">Add to cart</a>
+                                <a asp-controller="Cart"
+                                   asp-action="AddToCart"
+                                   asp-route-productId="@product.Id"
+                                   class="btn btn-primary rounded-pill px-4 py-3 fw-bold shadow-sm hover-scale">
+                                    <i class="bi bi-cart-plus-fill me-2"></i> Add to cart
+                                </a>
                             </div>
                         </div>
                     </div>
                 </div>
             }
-            
-            
+        </div>
+
+        <div class="text-center mt-5">
+            <a asp-controller="Products" asp-action="Index" class="btn btn-outline-dark btn-lg px-4 py-2">
+                Voir tous les produits <i class="bi bi-arrow-right ms-2"></i>
+            </a>
         </div>
     </div>
 </section>
+
+<!-- Features Section -->
+<section class="py-5">
+    <div class="container px-4 px-lg-5">
+        <div class="row gx-5 text-center">
+            <div class="col-md-4 mb-4 mb-md-0">
+                <div class="p-4 rounded-3 bg-light">
+                    <i class="bi bi-truck fs-1 text-primary mb-3"></i>
+                    <h3 class="h5 fw-bold">Livraison Rapide</h3>
+                    <p class="mb-0">Expédition sous 24h pour toutes les commandes</p>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4 mb-md-0">
+                <div class="p-4 rounded-3 bg-light">
+                    <i class="bi bi-shield-check fs-1 text-primary mb-3"></i>
+                    <h3 class="h5 fw-bold">Garantie 2 Ans</h3>
+                    <p class="mb-0">Tous nos produits sont garantis</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="p-4 rounded-3 bg-light">
+                    <i class="bi bi-arrow-repeat fs-1 text-primary mb-3"></i>
+                    <h3 class="h5 fw-bold">Retour Facile</h3>
+                    <p class="mb-0">14 jours pour changer d'avis</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        // Animation au défilement
+        document.addEventListener('DOMContentLoaded', function() {
+            const productCards = document.querySelectorAll('.product-card');
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = 1;
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            productCards.forEach(card => {
+                card.style.opacity = 0;
+                card.style.transform = 'translateY(20px)';
+                card.style.transition = 'all 0.6s ease';
+                observer.observe(card);
+            });
+        });
+    </script>
+}

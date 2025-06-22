@@ -34,6 +34,8 @@ namespace DemoTechEcommerceMVC.Models
                 totalCost += cartItem.Product.Price * cartItem.Qty;
             }
 
+            ViewBag.TotalCost =totalCost;
+
             return View(cart);
         }
 

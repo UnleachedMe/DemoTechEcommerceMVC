@@ -22,6 +22,7 @@ namespace DemoTechEcommerceMVC.Models
         [DisplayName("Category")]
         public int? CategoryId { get; set; }
 
+        [Display(Name = "Category")]
         public Category CategoryNavigation { get; set; }
     }
 }

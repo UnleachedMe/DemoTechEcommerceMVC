@@ -106,9 +106,49 @@ namespace DemoTechEcommerceMVC.Controllers
             return RedirectToAction("Thankyou");
         }
 
-        public IActionResult Thankyou()
+        public async Task<IActionResult> ThankyouAsync()
         {
-            return View();
+            var currentUser = await _userManager.GetUserAsync(HttpContext.User);
+            var latestOrder = await _context.Orders
+                .Include(o => o.Address)
+                .Where(o => o.UserId == currentUser.Id)
+                .OrderByDescending(o => o.CreatedAt)
+                .FirstOrDefaultAsync();
+
+            return View(latestOrder);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteAddress(int id)
+        {
+            try
+            {
+                // Récupérer l'utilisateur courant
+                var currentUser = await _userManager.GetUserAsync(HttpContext.User);
+                if (currentUser == null)
+                {
+                    return Unauthorized();
+                }
+
+                // Trouver l'adresse à supprimer
+                var address = await _context.Adresses
+                    .FirstOrDefaultAsync(a => a.Id == id && a.UserId == currentUser.Id);
+
+                if (address == null)
+                {
+                    return NotFound();
+                }
+
+                // Supprimer l'adresse
+                _context.Adresses.Remove(address);
+                await _context.SaveChangesAsync();
+
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction(nameof(Index));
+            }
         }
     }
 }

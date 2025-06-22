@@ -1,48 +1,162 @@
 ﻿@model List<Product>
 
-@section PageTitle {
-    <!--Header-->
-    <header class="bg-dark py-5">
-        <div class="container px-4 px-lg-5 my-5">
-            <div class="text-center text-white">
-                <h1 class="display-4 fw-bolder">All products</h1>
-            </div>
-        </div>
-    </header>
+@section Styles {
+    <style>
+        .product-header {
+            background: linear-gradient(135deg, #000428, #004e92);
+            position: relative;
+            overflow: hidden;
+        }
+
+            .product-header::before {
+                content: "";
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: url('https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?q=80&w=2070') no-repeat center center;
+                background-size: cover;
+                opacity: 0.3;
+            }
+
+        .filter-section {
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .sorting-options {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .sort-btn {
+            border: 1px solid #dee2e6;
+            background: white;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+        }
+
+            .sort-btn:hover, .sort-btn.active {
+                background-color: var(--primary-color);
+                color: white;
+                border-color: var(--primary-color);
+            }
+
+        .product-count {
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+    </style>
 }
 
+<!-- Product Header -->
+<header class="product-header py-5">
+    <div class="container px-4 px-lg-5 my-5 position-relative">
+        <div class="text-center text-white">
+            <h1 class="display-4 fw-bold mb-3">Tous nos produits</h1>
+            <p class="lead fs-5">Découvrez notre sélection complète de produits high-tech</p>
+        </div>
+    </div>
+</header>
+
+<!-- Main Content -->
 <section class="py-5">
-    <div class="container px-4 px-lg-5 mt-5">
-        <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+    <div class="container px-4 px-lg-5 mt-4">
+        <!-- Filter/Sort Section -->
+        <div class="filter-section mb-5">
+            <div class="d-flex justify-content-between align-items-center flex-wrap">
+                <div class="mb-3 mb-md-0">
+                    <span class="product-count">@Model.Count produits disponibles</span>
+                </div>
+                <div class="sorting-options">
+                    <button class="sort-btn">All</button>
+                    <button class="sort-btn">Popular</button>
+                    <button class="sort-btn">New Drops</button>
+                    <button class="sort-btn">Price Ascending</button>
+                    <button class="sort-btn">Price Descending</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Product Grid -->
+        <div class="row gx-4 gx-lg-5 row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4">
             @foreach (var product in Model)
             {
                 <div class="col mb-5">
-                    <div class="card h-100">
+                    <div class="card h-100 product-card">
                         <!-- Product image-->
-                        <a asp-controller="Products" asp-action="Details" asp-route-id="@product.Id">
-                            <img class="card-img-top" src="@product.Image" width="295px" height="255px" alt="Image of @product.Name" />
-                        </a>                        <!-- Product details-->
+                        <div class="product-img-container p-3">
+                            <a asp-controller="Products" asp-action="Details" asp-route-id="@product.Id">
+                                <img class="product-img card-img-top" src="@product.Image" alt="Image of @product.Name" width="255" height="255" />
+                            </a>
+                        </div>
+
+                        <!-- Product details-->
                         <div class="card-body p-4">
                             <div class="text-center">
                                 <!-- Product name-->
-                                <h5 class="fw-bolder">
-                                    <a asp-controller="Products" asp-action="Details" asp-route-id="@product.Id">@product.Name</a>
+                                <h5 class="fw-bolder mb-3">
+                                    <a class="text-decoration-none text-dark" asp-controller="Products" asp-action="Details" asp-route-id="@product.Id">@product.Name</a>
                                 </h5>
                                 <!-- Product price-->
-                                @($"{product.Price} DH")
+                                <span class="price-tag">@($"{product.Price} DH")</span>
                             </div>
                         </div>
+
                         <!-- Product actions-->
                         <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
                             <div class="text-center">
-                                <a asp-controller="Cart" asp-action="AddToCart" asp-route-productId="@product.Id" class="btn btn-outline-dark mt-auto">Add to cart</a>
+                                <a asp-controller="Cart"
+                                   asp-action="AddToCart"
+                                   asp-route-productId="@product.Id"
+                                   class="btn btn-primary rounded-pill px-4 py-3 fw-bold shadow-sm hover-scale">
+                                    <i class="bi bi-cart-plus-fill me-2"></i> Add to cart
+                                </a>
                             </div>
                         </div>
                     </div>
                 </div>
             }
-
-
         </div>
+
+        <!-- Pagination -->
+        <nav aria-label="Product pagination" class="mt-5">
+            <ul class="pagination justify-content-center">
+                <li class="page-item disabled">
+                    <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Précédent</a>
+                </li>
+                <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item">
+                    <a class="page-link" href="#">Suivant</a>
+                </li>
+            </ul>
+        </nav>
     </div>
 </section>
+
+@section Scripts {
+    <script>
+        
+
+        // Animation for product cards
+        const productCards = document.querySelectorAll('.product-card');
+        productCards.forEach((card, index) => {
+            card.style.transform = `translateY(${index % 2 === 0 ? '20px' : '10px'})`;
+            card.style.opacity = '0';
+            card.style.transition = `all 0.4s ease ${index * 0.1}s`;
+
+            setTimeout(() => {
+                card.style.transform = 'translateY(0)';
+                card.style.opacity = '1';
+            }, 100);
+        });
+    </script>
+}
