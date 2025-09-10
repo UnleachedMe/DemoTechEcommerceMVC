@@ -1,3 +1,4 @@
+using DemoTechEcommerceMVC.Areas.Services;
 using DemoTechEcommerceMVC.Data;
 using DemoTechEcommerceMVC.Models;
 using Microsoft.AspNetCore.Identity;
@@ -35,6 +36,8 @@ StripeConfiguration.ApiKey = builder.Configuration.GetSection("Stripe")["SecretK
 
 builder.Services.AddScoped<DemoTechEcommerceMVC.Areas.Services.StripeService>();
 
+builder.Services.AddScoped<StripeService>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -44,6 +47,10 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+
+
+
+    
 
 app.UseHttpsRedirection();
 app.UseRouting();

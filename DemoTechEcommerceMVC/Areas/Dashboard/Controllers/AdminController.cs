@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using DemoTechEcommerceMVC.Areas.Services;
+using DemoTechEcommerceMVC.Data;
+using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using Stripe;
-using DemoTechEcommerceMVC.Areas.Services;
 
 namespace DemoTechEcommerceMVC.Areas.Dashboard.Controllers
 {
@@ -8,16 +10,20 @@ namespace DemoTechEcommerceMVC.Areas.Dashboard.Controllers
     public class AdminController : Controller
     {
         private readonly StripeService _stripeService;
+        private readonly AppDbContext _context;
 
-        public AdminController(StripeService stripeService)
+        public AdminController(StripeService stripeService, AppDbContext context)
         {
             _stripeService = stripeService;
+            _context = context;
         }
 
         public IActionResult Index()
         {
+
             return View();
         }
+
 
         public IActionResult Transactions()
         {

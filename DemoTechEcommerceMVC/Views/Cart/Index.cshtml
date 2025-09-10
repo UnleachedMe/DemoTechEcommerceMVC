@@ -98,8 +98,8 @@
 <header class="cart-header py-5">
     <div class="container px-4 px-lg-5 my-5 position-relative">
         <div class="text-center text-white">
-            <h1 class="display-4 fw-bold mb-3">Votre Panier</h1>
-            <p class="lead fs-5">Revoyez vos articles avant de passer commande</p>
+            <h1 class="display-4 fw-bold mb-3">Your Cart</h1>
+            <p class="lead fs-5">Review your items before placing your order</p>
         </div>
     </div>
 </header>
@@ -113,17 +113,17 @@
                 <div class="card border-0 shadow-sm mb-4">
                     <div class="card-body p-4">
                         <h4 class="card-title mb-4 fw-bold">
-                            <i class="bi bi-cart3 me-2"></i>Articles sélectionnés (@Model.Count)
+                            <i class="bi bi-cart3 me-2"></i>Selected Items (@Model.Count)
                         </h4>
 
                         @if (Model.Count == 0)
                         {
                             <div class="text-center py-5">
                                 <i class="bi bi-cart-x fs-1 text-muted mb-3"></i>
-                                <h5 class="fw-bold">Votre panier est vide</h5>
-                                <p class="text-muted">Parcourez nos produits et ajoutez des articles à votre panier</p>
+                                <h5 class="fw-bold">Your cart is empty</h5>
+                                <p class="text-muted">Browse our products and add items to your cart</p>
                                 <a asp-controller="Products" asp-action="Index" class="btn btn-primary mt-3">
-                                    <i class="bi bi-arrow-left me-2"></i>Commencer mes achats
+                                    <i class="bi bi-arrow-left me-2"></i>Start Shopping
                                 </a>
                             </div>
                         }
@@ -195,13 +195,12 @@
                         <div class="d-flex align-items-center mb-3">
                             <i class="bi bi-truck fs-4 text-primary me-3"></i>
                             <div>
-                                <h5 class="mb-1">Livraison gratuite</h5>
-                                <p class="text-muted mb-0">Expédition sous 1-2 semaines</p>
+                                <h5 class="mb-1">Free Delivery</h5>
+                                <p class="text-muted mb-0">Shipping within 1–2 weeks</p>
                             </div>
                         </div>
                         <p class="text-muted">
-                            Tous nos produits sont soigneusement emballés et expédiés avec le plus grand soin.
-                            Profitez de notre service client exceptionnel et de notre politique de retour sans tracas.
+                            All our products are carefully packaged and shipped with great care. Enjoy our exceptional customer service and hassle-free return policy.
                         </p>
                     </div>
                 </div>
@@ -212,15 +211,15 @@
                 <div class="card summary-card sticky-top" style="top: 20px;">
                     <div class="card-body p-4">
                         <h4 class="card-title mb-4 fw-bold">
-                            <i class="bi bi-receipt me-2"></i>Récapitulatif
+                            <i class="bi bi-receipt me-2"></i>Summary
                         </h4>
 
                         <!-- Coupon Code -->
                         <div class="mb-4">
-                            <label class="form-label fw-bold">Code promo</label>
+                            <label class="form-label fw-bold">Promo Code</label>
                             <div class="input-group">
                                 <input type="text" class="form-control coupon-input" placeholder="Entrez un code">
-                                <button class="btn btn-primary coupon-btn">Appliquer</button>
+                                <button class="btn btn-primary coupon-btn">Apply</button>
                             </div>
                         </div>
 
@@ -231,12 +230,12 @@
                                 <span>@ViewBag.TotalCost.ToString("0.00") DH</span>
                             </div>
                             <div class="d-flex justify-content-between mb-2">
-                                <span>Livraison:</span>
-                                <span class="text-success">Gratuite</span>
+                                <span>Shipping:</span>
+                                <span class="text-success">Free</span>
                             </div>
                             <div class="d-flex justify-content-between mb-3">
                                 <span>Taxes:</span>
-                                <span>Incluses</span>
+                                <span>included</span>
                             </div>
 
                             <div class="d-flex justify-content-between border-top pt-3 mb-4">
@@ -247,12 +246,12 @@
                             <!-- Checkout Button -->
                             <a asp-controller="Checkout" asp-action="Index"
                                class="btn btn-primary w-100 py-2 mb-3 @(Model.Count == 0 ? "disabled" : "")">
-                                <i class="bi bi-credit-card me-2"></i>Passer la commande
+                                <i class="bi bi-credit-card me-2"></i>Place Order
                             </a>
 
                             <!-- Continue Shopping -->
                             <a asp-controller="Products" asp-action="Index" class="btn btn-outline-dark w-100 py-2">
-                                <i class="bi bi-arrow-left me-2"></i>Continuer mes achats
+                                <i class="bi bi-arrow-left me-2"></i>Continue Shopping
                             </a>
                         </div>
                     </div>
